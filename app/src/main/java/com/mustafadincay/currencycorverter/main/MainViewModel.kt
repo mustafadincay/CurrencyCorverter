@@ -1,18 +1,20 @@
 package com.mustafadincay.currencycorverter.main
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mustafadincay.currencycorverter.data.model.Rates
 import com.mustafadincay.currencycorverter.util.Constants
 import com.mustafadincay.currencycorverter.util.DispatcherProvider
 import com.mustafadincay.currencycorverter.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.lang.Math.round
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: MainRepository,
     private val dispatcher: DispatcherProvider
 ) : ViewModel() {
@@ -32,19 +34,20 @@ class MainViewModel @ViewModelInject constructor(
         toCurrency: String
     ) {
         val fromAmount = amountStr.toFloatOrNull()
-        if(fromAmount == null) {
+        if (fromAmount == null) {
             _conversion.value = CurrencyEvent.Failure("Not a valid amount")
             return
         }
 
         viewModelScope.launch(dispatcher.io) {
             _conversion.value = CurrencyEvent.Loading
-            when(val ratesResponse = repository.getRates(fromCurrency, Constants.API_KEY)) {
-                is Resource.Error -> _conversion.value = CurrencyEvent.Failure(ratesResponse.message!!)
+            when (val ratesResponse = repository.getRates(fromCurrency, Constants.API_KEY)) {
+                is Resource.Error -> _conversion.value =
+                    CurrencyEvent.Failure(ratesResponse.message!!)
                 is Resource.Success -> {
                     val rates = ratesResponse.data!!.rates
                     val rate = getRateForCurrency(toCurrency, rates)
-                    if(rate == null) {
+                    if (rate == null) {
                         _conversion.value = CurrencyEvent.Failure("Unexpected error")
                     } else {
                         val convertedCurrency = round(fromAmount * rate * 100) / 100

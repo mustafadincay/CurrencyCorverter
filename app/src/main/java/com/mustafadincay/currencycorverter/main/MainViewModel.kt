@@ -1,20 +1,17 @@
 package com.mustafadincay.currencycorverter.main
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mustafadincay.currencycorverter.data.model.Rates
-import com.mustafadincay.currencycorverter.util.Constants
 import com.mustafadincay.currencycorverter.util.DispatcherProvider
 import com.mustafadincay.currencycorverter.util.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.lang.Math.round
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel @ViewModelInject constructor(
     private val repository: MainRepository,
     private val dispatcher: DispatcherProvider
 ) : ViewModel() {
@@ -41,7 +38,7 @@ class MainViewModel @Inject constructor(
 
         viewModelScope.launch(dispatcher.io) {
             _conversion.value = CurrencyEvent.Loading
-            when (val ratesResponse = repository.getRates(fromCurrency, Constants.API_KEY)) {
+            when (val ratesResponse = repository.getRates(fromCurrency)) {
                 is Resource.Error -> _conversion.value =
                     CurrencyEvent.Failure(ratesResponse.message!!)
                 is Resource.Success -> {
@@ -51,8 +48,7 @@ class MainViewModel @Inject constructor(
                         _conversion.value = CurrencyEvent.Failure("Unexpected error")
                     } else {
                         val convertedCurrency = round(fromAmount * rate * 100) / 100
-                        _conversion.value = CurrencyEvent.Success(
-                            "$fromAmount $fromCurrency = $convertedCurrency $toCurrency"
+                        _conversion.value = CurrencyEvent.Success("${fromAmount.toDouble()} $fromCurrency = ${convertedCurrency.toDouble()} $toCurrency"
                         )
                     }
                 }
@@ -61,39 +57,13 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getRateForCurrency(currency: String, rates: Rates) = when (currency) {
-        "TRY" -> rates.tRY
-        "CAD" -> rates.cAD
-        "HKD" -> rates.hKD
-        "ISK" -> rates.iSK
-        "EUR" -> rates.eUR
-        "PHP" -> rates.pHP
-        "DKK" -> rates.dKK
-        "HUF" -> rates.hUF
-        "CZK" -> rates.cZK
-        "AUD" -> rates.aUD
-        "RON" -> rates.rON
-        "SEK" -> rates.sEK
-        "IDR" -> rates.iDR
-        "INR" -> rates.iNR
-        "BRL" -> rates.bRL
-        "RUB" -> rates.rUB
-        "HRK" -> rates.hRK
-        "JPY" -> rates.jPY
-        "THB" -> rates.tHB
-        "CHF" -> rates.cHF
-        "SGD" -> rates.sGD
-        "PLN" -> rates.pLN
-        "BGN" -> rates.bGN
-        "CNY" -> rates.cNY
-        "NOK" -> rates.nOK
-        "NZD" -> rates.nZD
-        "ZAR" -> rates.zAR
-        "USD" -> rates.uSD
-        "MXN" -> rates.mXN
-        "ILS" -> rates.iLS
-        "GBP" -> rates.gBP
-        "KRW" -> rates.kRW
-        "MYR" -> rates.mYR
+        "TRY" -> rates.TRY
+        "CAD" -> rates.CAD
+        "EUR" -> rates.EUR
+        "JPY" -> rates.JPY
+        "CNY" -> rates.CNY
+        "GBP" -> rates.GBP
+        "USD" -> rates.USD
         else -> null
     }
 

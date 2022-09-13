@@ -9,7 +9,7 @@ import com.mustafadincay.currencycorverter.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Math.round
+import kotlin.math.round
 
 class MainViewModel @ViewModelInject constructor(
     private val repository: MainRepository,
@@ -48,7 +48,7 @@ class MainViewModel @ViewModelInject constructor(
                         _conversion.value = CurrencyEvent.Failure("Unexpected error")
                     } else {
                         val convertedCurrency = round(fromAmount * rate * 100) / 100
-                        _conversion.value = CurrencyEvent.Success("${fromAmount.toDouble()} $fromCurrency = ${convertedCurrency.toDouble()} $toCurrency"
+                        _conversion.value = CurrencyEvent.Success("$fromAmount $fromCurrency = $convertedCurrency $toCurrency"
                         )
                     }
                 }

@@ -2,11 +2,9 @@
     <string name="app_name">CurrencyCorverter</string>
     <string-array name="currency_codes">
         <item>TRY</item>
-        <item>CAD</item>
-        <item>EUR</item>
-        <item>JPY</item>
-        <item>CNY</item>
-        <item>GBP</item>
         <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>CAD</item>
     </string-array>
 </resources>

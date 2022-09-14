@@ -58,12 +58,10 @@ class MainViewModel @ViewModelInject constructor(
 
     private fun getRateForCurrency(currency: String, rates: Rates) = when (currency) {
         "TRY" -> rates.TRY
-        "CAD" -> rates.CAD
-        "EUR" -> rates.EUR
-        "JPY" -> rates.JPY
-        "CNY" -> rates.CNY
-        "GBP" -> rates.GBP
         "USD" -> rates.USD
+        "EUR" -> rates.EUR
+        "CAD" -> rates.CAD
+        "GBP" -> rates.GBP
         else -> null
     }
 

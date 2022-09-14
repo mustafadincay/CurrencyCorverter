@@ -76,7 +76,7 @@
         android:id="@+id/spToCurrency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:entries="@array/currency_codes"
+        android:entries="@array/currency_codes_to"
         android:padding="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTo" />

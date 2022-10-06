@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.huawei.agconnect'
 }
 
 android {
@@ -80,5 +81,11 @@ dependencies {
     // Coroutine Lifecycle Scopes
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
+    implementation 'com.huawei.hms:hwid:6.1.0.302'
+
+    // Ads Kit
+    implementation 'com.huawei.hms:ads:3.4.48.301'
+    implementation "com.google.code.gson:gson:2.8.6"
 
 }
